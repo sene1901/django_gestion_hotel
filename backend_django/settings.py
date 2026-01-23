@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,9 +19,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from dotenv import load_dotenv
 import os
 
-load_dotenv(BASE_DIR.parent / ".env")
+
+# à la place de load_dotenv(BASE_DIR.parent / ".env")
+load_dotenv(BASE_DIR / ".env")
+import os
+os.getenv("DB_NAME")
 
 
+
+
+# print("DB_PASSWORD =", os.getenv("DB_PASSWORD"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -29,7 +37,11 @@ load_dotenv(BASE_DIR.parent / ".env")
 SECRET_KEY = 'django-insecure-cxve-&)r26_*i-f5&%q#$w2&h)+dyu#_+atq5$x0srxs0nrl^n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+DEBUG = os.getenv('DEBUG') == 'True'
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 ALLOWED_HOSTS = []
 
@@ -43,13 +55,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
+    
     'rest_framework',
-    'rest_framework_simplejwt',
-    'django_rest_passwordreset',
+    # 'rest_framework_simplejwt',
+    # 'django_rest_passwordreset',
+     'accounts.apps.AccountsConfig',
+
+    'hotels.apps.HotelsConfig',
+    
+    
 
 
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,11 +81,18 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+                'rest_framework_simplejwt.authentication.JWTAuthentication',
 
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+}
 
 ROOT_URLCONF = 'backend_django.urls'
 
@@ -115,14 +140,16 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
+
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

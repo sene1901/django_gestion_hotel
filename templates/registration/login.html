@@ -11,5 +11,14 @@
         {{ form.as_p }}
         <button type="submit">Se connecter</button>
     </form>
+
+    {% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 </body>
 </html>
