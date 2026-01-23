@@ -63,13 +63,14 @@ INSTALLED_APPS = [
 
     'hotels.apps.HotelsConfig',
     
-    
+     "corsheaders",
 
 
 ]
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,15 +84,15 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-                'rest_framework_simplejwt.authentication.JWTAuthentication',
-
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    
 }
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 ROOT_URLCONF = 'backend_django.urls'
@@ -109,6 +110,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+# Autoriser ton frontend local
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
 ]
 
 WSGI_APPLICATION = 'backend_django.wsgi.application'
@@ -148,8 +154,13 @@ DATABASES = {
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# pour test local
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@monapp.com'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
