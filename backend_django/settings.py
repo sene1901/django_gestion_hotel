@@ -350,7 +350,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # CORS
 # -----------------------------
 CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS', default='http://localhost:5173'
+    "https://projet-stage-gestion-hotel.vercel.app/"
 ).split(',')
 
 # -----------------------------
