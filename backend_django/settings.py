@@ -296,6 +296,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://projet-stage-gestion-hotel.vercel.app",
 ]
 
+DEBUG = False
 
 
 
@@ -357,10 +358,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # CORS
 # -----------------------------
 CORS_ALLOWED_ORIGINS = config(
-    'https://django-gestion-hotel.onrender.com', default='http://localhost:5173'
+    'django-gestion-hotel.onrender.com', ".onrender.com"
 ).split(',')
 
 # -----------------------------
 # Default primary key field type
 # -----------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
