@@ -291,6 +291,13 @@ TEMPLATES = [
         },
     },
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://django-gestion-hotel.onrender.com",
+    "https://projet-stage-gestion-hotel.vercel.app",
+]
+
+
+
 
 WSGI_APPLICATION = 'backend_django.wsgi.application'
 
@@ -350,7 +357,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # CORS
 # -----------------------------
 CORS_ALLOWED_ORIGINS = config(
-    'https://django-gestion-hotel.onrender.com/', default='http://localhost:5173'
+    'https://django-gestion-hotel.onrender.com', default='http://localhost:5173'
 ).split(',')
 
 # -----------------------------
