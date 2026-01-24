@@ -349,11 +349,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # -----------------------------
 # CORS
 # -----------------------------
-# CORS_ALLOWED_ORIGINS = config(
-#     'CORS_ALLOWED_ORIGINS', default='http://localhost:5173'
-# ).split(',')
+CORS_ALLOWED_ORIGINS = config(
+    'https://django-gestion-hotel.onrender.com/', default='http://localhost:5173'
+).split(',')
 
-CORS_ALLOWED_ORIGINS = config("FRONTEND_URL", default="").split(',')
 # -----------------------------
 # Default primary key field type
 # -----------------------------
