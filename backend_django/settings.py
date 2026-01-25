@@ -212,7 +212,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 # Remplacer par ton domaine Render
 CORS_ALLOWED_ORIGINS = [
-    "https://projet-stage-gestion-hotel.vercel.app",
+    "https://django-hotel-eight.vercel.app",
 ]
 
 
@@ -304,7 +304,7 @@ TEMPLATES = [
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://django-gestion-hotel.onrender.com",
-    "https://projet-stage-gestion-hotel.vercel.app",
+    "https://django-hotel-eight.vercel.app",
 ]
 
 DEBUG = False
