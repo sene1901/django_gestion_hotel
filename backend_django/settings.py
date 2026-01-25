@@ -304,7 +304,7 @@ TEMPLATES = [
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://django-gestion-hotel.onrender.com",
-    "https://projet-stage-gestion-hotel.vercel.app/login",
+    "https://projet-stage-gestion-hotel.vercel.app",
 ]
 
 DEBUG = False
