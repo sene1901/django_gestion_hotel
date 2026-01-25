@@ -211,7 +211,9 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 SECRET_KEY = config('SECRET_KEY')
 
 # Remplacer par ton domaine Render
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
+CORS_ALLOWED_ORIGINS = config(
+    'django-gestion-hotel.onrender.com', ".onrender.com"
+).split(',')
 
 # -----------------------------
 # Media
@@ -357,9 +359,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # -----------------------------
 # CORS
 # -----------------------------
-CORS_ALLOWED_ORIGINS = config(
-    'django-gestion-hotel.onrender.com', ".onrender.com"
-).split(',')
+
 
 # -----------------------------
 # Default primary key field type
