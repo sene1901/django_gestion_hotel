@@ -211,9 +211,18 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 SECRET_KEY = config('SECRET_KEY')
 
 # Remplacer par ton domaine Render
-CORS_ALLOWED_ORIGINS = config(
-    'django-gestion-hotel.onrender.com', ".onrender.com"
-).split(',')
+CORS_ALLOWED_ORIGINS = [
+    "https://projet-stage-gestion-hotel.vercel.app",
+]
+
+
+
+ALLOWED_HOSTS = [
+    "django-gestion-hotel.onrender.com",
+    ".onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
 
 # -----------------------------
 # Media
