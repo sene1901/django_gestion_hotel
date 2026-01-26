@@ -1,6 +1,8 @@
+
+
 # # accounts/serializers.py
 # from rest_framework import serializers
-# from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model, authenticate
 # from django.contrib.auth.tokens import PasswordResetTokenGenerator
 # from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 # from django.utils.encoding import smart_bytes, smart_str
@@ -9,47 +11,74 @@
 
 # User = get_user_model()
 
+
+# # =========================
+# # REGISTER
+# # =========================
 # class RegisterSerializer(serializers.ModelSerializer):
 #     password = serializers.CharField(write_only=True, min_length=6)
 
 #     class Meta:
 #         model = User
-#         fields = ('id', 'username', 'email', 'password')
+#         fields = ("id", "username", "email", "password")
 
 #     def create(self, validated_data):
 #         user = User.objects.create_user(
-#             username=validated_data['username'],
-#             email=validated_data.get('email'),
-#             password=validated_data['password']
+#             username=validated_data["username"],
+#             email=validated_data.get("email"),
+#             password=validated_data["password"],
 #         )
 #         return user
 
 
+# # =========================
+# # PROFILE IMAGE
+# # =========================
 # class ProfileImageSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = User
-#         fields = ("imageprofil",)  
+#         fields = ("imageprofil",)
 
 
-
-
-
-
-
+# # =========================
+# # LOGIN EMAIL + PASSWORD
+# # =========================
 # class EmailLoginSerializer(serializers.Serializer):
 #     email = serializers.EmailField()
 #     password = serializers.CharField(write_only=True)
 
-#     def validate(self, data):
-#         email = data.get("email")
-#         password = data.get("password")
+#     def validate(self, attrs):
+#         email = attrs.get("email")
+#         password = attrs.get("password")
+
+#         try:
+#             user = User.objects.get(email=email)
+#         except User.DoesNotExist:
+#             raise serializers.ValidationError("Utilisateur introuvable")
+
+#         if not user.check_password(password):
+#             raise serializers.ValidationError("Mot de passe incorrect")
+
+#         if not user.is_active:
+#             raise serializers.ValidationError("Compte désactivé")
+
+#         return user  
+#     email = serializers.EmailField()
+#     password = serializers.CharField(write_only=True)
+
+#     def validate(self, attrs):
+#         email = attrs.get("email").lower()
+#         password = attrs.get("password")
 
 #         try:
 #             user = User.objects.get(email=email)
 #         except User.DoesNotExist:
 #             raise serializers.ValidationError("Email ou mot de passe incorrect")
 
-#         user = authenticate(username=user.username, password=password)
+#         user = authenticate(
+#             username=user.username,
+#             password=password
+#         )
 
 #         if not user:
 #             raise serializers.ValidationError("Email ou mot de passe incorrect")
@@ -60,18 +89,23 @@
 
 
 
-# # mot de passe oublier
+
+
+
+# # =========================
+# # PASSWORD RESET REQUEST
+# # =========================
 # class PasswordResetRequestSerializer(serializers.Serializer):
 #     email = serializers.EmailField()
 
 #     def validate(self, attrs):
-#         email = attrs.get('email')
+#         email = attrs.get("email").lower()
 #         if not User.objects.filter(email=email).exists():
 #             raise serializers.ValidationError("Aucun utilisateur avec cet email")
 #         return attrs
 
 #     def save(self):
-#         user = User.objects.get(email=self.validated_data['email'])
+#         user = User.objects.get(email=self.validated_data["email"])
 #         uid = urlsafe_base64_encode(smart_bytes(user.id))
 #         token = PasswordResetTokenGenerator().make_token(user)
 
@@ -82,10 +116,13 @@
 #             message=f"Cliquez ici pour réinitialiser votre mot de passe : {reset_link}",
 #             from_email=settings.DEFAULT_FROM_EMAIL,
 #             recipient_list=[user.email],
+#             fail_silently=False,
 #         )
 
 
-# # nouveau mot de passe
+# # =========================
+# # SET NEW PASSWORD
+# # =========================
 # class SetNewPasswordSerializer(serializers.Serializer):
 #     password = serializers.CharField(min_length=6)
 #     token = serializers.CharField()
@@ -93,20 +130,24 @@
 
 #     def validate(self, attrs):
 #         try:
-#             user_id = smart_str(urlsafe_base64_decode(attrs['uidb64']))
+#             user_id = smart_str(urlsafe_base64_decode(attrs["uidb64"]))
 #             user = User.objects.get(id=user_id)
 
-#             if not PasswordResetTokenGenerator().check_token(user, attrs['token']):
+#             if not PasswordResetTokenGenerator().check_token(
+#                 user, attrs["token"]
+#             ):
 #                 raise serializers.ValidationError("Token invalide ou expiré")
 
-#             user.set_password(attrs['password'])
+#             user.set_password(attrs["password"])
 #             user.save()
+
 #             return user
 
 #         except Exception:
-#             raise serializers.ValidationError("Lien invalide")
+#             raise serializers.ValidationError("Lien invalide ou expiré")
 
 # accounts/serializers.py
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -143,6 +184,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProfileImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        # Vérifie que ton modèle User a bien ce champ
         fields = ("imageprofil",)
 
 
@@ -150,25 +192,6 @@ class ProfileImageSerializer(serializers.ModelSerializer):
 # LOGIN EMAIL + PASSWORD
 # =========================
 class EmailLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
-
-    def validate(self, attrs):
-        email = attrs.get("email")
-        password = attrs.get("password")
-
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            raise serializers.ValidationError("Utilisateur introuvable")
-
-        if not user.check_password(password):
-            raise serializers.ValidationError("Mot de passe incorrect")
-
-        if not user.is_active:
-            raise serializers.ValidationError("Compte désactivé")
-
-        return user  
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
@@ -181,21 +204,15 @@ class EmailLoginSerializer(serializers.Serializer):
         except User.DoesNotExist:
             raise serializers.ValidationError("Email ou mot de passe incorrect")
 
-        user = authenticate(
-            username=user.username,
-            password=password
-        )
+        user = authenticate(username=user.username, password=password)
 
         if not user:
             raise serializers.ValidationError("Email ou mot de passe incorrect")
 
+        if not user.is_active:
+            raise serializers.ValidationError("Compte désactivé")
+
         return user
-
-
-
-
-
-
 
 
 # =========================
@@ -215,14 +232,14 @@ class PasswordResetRequestSerializer(serializers.Serializer):
         uid = urlsafe_base64_encode(smart_bytes(user.id))
         token = PasswordResetTokenGenerator().make_token(user)
 
-        reset_link = f"http://localhost:5173/reset-password/{uid}/{token}"
+        reset_link = f"https://django-hotel-eight.vercel.app/reset-password/{uid}/{token}"
 
         send_mail(
             subject="Réinitialisation de mot de passe",
             message=f"Cliquez ici pour réinitialiser votre mot de passe : {reset_link}",
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
-            fail_silently=False,
+            fail_silently=True,  # Évite 500 si SMTP mal configuré
         )
 
 
@@ -239,9 +256,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
             user_id = smart_str(urlsafe_base64_decode(attrs["uidb64"]))
             user = User.objects.get(id=user_id)
 
-            if not PasswordResetTokenGenerator().check_token(
-                user, attrs["token"]
-            ):
+            if not PasswordResetTokenGenerator().check_token(user, attrs["token"]):
                 raise serializers.ValidationError("Token invalide ou expiré")
 
             user.set_password(attrs["password"])
