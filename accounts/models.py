@@ -6,8 +6,7 @@
 # class User(AbstractUser):
 #     pass
 
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+
 
 # class User(AbstractUser):
 #     imageprofil = models.ImageField(
@@ -21,12 +20,27 @@ from django.db import models
 
 
 
+# from django.contrib.auth.models import AbstractUser
+# from django.db import models
+
+
+# class User(AbstractUser):
+#     imageprofil = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+
+#     def __str__(self):
+#         return self.username
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from cloudinary.models import CloudinaryField
+
 
 class User(AbstractUser):
-    imageprofil = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    imageprofil = CloudinaryField(
+        "imageprofil",
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.username
-
