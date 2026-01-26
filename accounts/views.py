@@ -48,7 +48,6 @@ class EmailLoginView(APIView):
                 "user": {
                     "id": user.id,
                     "email": user.email,
-                    "username": user.username,
                 },
             },
             status=status.HTTP_200_OK,
