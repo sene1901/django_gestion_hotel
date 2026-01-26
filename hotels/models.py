@@ -22,6 +22,8 @@
 #         return self.name
 from django.db import models
 from django.conf import settings
+from cloudinary.models import CloudinaryField
+
 
 class Hotel(models.Model):
     owner = models.ForeignKey(
@@ -33,9 +35,10 @@ class Hotel(models.Model):
     description = models.TextField()
     prix = models.DecimalField(max_digits=10, decimal_places=2)
     
-    # Image stockée sur Cloudinary
-    image = models.ImageField(
-        upload_to='hotels/',  # Cloudinary utilisera ce dossier dans ton compte
+    # Image stockée sur Cloudinary - utilise CloudinaryField
+    image = CloudinaryField(
+        'image',
+        folder='hotels/',  # Dossier dans Cloudinary
         null=True,
         blank=True
     )
