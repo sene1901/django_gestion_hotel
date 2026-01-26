@@ -239,7 +239,7 @@
 # # -----------------------------
 # INSTALLED_APPS = [
 #     'django.contrib.admin',
-#     'django.contrib.auth',
+#     'django.contrib.auth'
 #     'django.contrib.contenttypes',
 #     'django.contrib.sessions',
 #     'django.contrib.messages',
@@ -452,9 +452,9 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Configuration Cloudinary avec valeurs par défaut
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config("CLOUD_NAME", default=""),
-    'API_KEY': config("CLOUD_API_KEY", default=""),
-    'API_SECRET': config("CLOUD_API_SECRET", default=""),
+    'CLOUD_NAME': config("CLOUD_NAME", "doxx51hrh"),
+    'API_KEY': config("CLOUD_API_KEY", "167848852529489"),
+    'API_SECRET': config("CLOUD_API_SECRET", "*********************************"),
 }
 
 # Import cloudinary après la configuration
