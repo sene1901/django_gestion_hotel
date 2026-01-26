@@ -172,10 +172,11 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             username=validated_data["username"],
-            email=validated_data.get("email"),
+            email=validated_data["email"].lower(),
             password=validated_data["password"],
         )
         return user
+
 
 
 # =========================
@@ -204,15 +205,14 @@ class EmailLoginSerializer(serializers.Serializer):
         except User.DoesNotExist:
             raise serializers.ValidationError("Email ou mot de passe incorrect")
 
-        user = authenticate(username=user.username, password=password)
-
-        if not user:
+        if not user.check_password(password):
             raise serializers.ValidationError("Email ou mot de passe incorrect")
 
         if not user.is_active:
             raise serializers.ValidationError("Compte désactivé")
 
         return user
+
 
 
 # =========================
