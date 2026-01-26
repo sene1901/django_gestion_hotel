@@ -213,6 +213,7 @@ SECRET_KEY = config('SECRET_KEY')
 # Remplacer par ton domaine Render
 CORS_ALLOWED_ORIGINS = [
     "https://django-hotel-eight.vercel.app",
+      "http://localhost:5173",
 ]
 
 
@@ -307,7 +308,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://django-hotel-eight.vercel.app",
 ]
 
-DEBUG = False
+
 
 
 
