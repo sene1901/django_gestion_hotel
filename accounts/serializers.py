@@ -154,6 +154,25 @@ class EmailLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
+        email = attrs.get("email")
+        password = attrs.get("password")
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Utilisateur introuvable")
+
+        if not user.check_password(password):
+            raise serializers.ValidationError("Mot de passe incorrect")
+
+        if not user.is_active:
+            raise serializers.ValidationError("Compte désactivé")
+
+        return user  
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
         email = attrs.get("email").lower()
         password = attrs.get("password")
 
@@ -171,6 +190,12 @@ class EmailLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Email ou mot de passe incorrect")
 
         return user
+
+
+
+
+
+
 
 
 # =========================
