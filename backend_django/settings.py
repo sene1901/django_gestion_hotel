@@ -243,12 +243,22 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_rest_passwordreset',
     "corsheaders",
+    'cloudinary',
+    'cloudinary_storage',
     
     # Mes apps
     'accounts.apps.AccountsConfig',
     'hotels.apps.HotelsConfig',
     'rest_framework_simplejwt.token_blacklist',
 ]
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config("CLOUD_NAME"),
+    'API_KEY': config("CLOUD_API_KEY"),
+    'API_SECRET': config("CLOUD_API_SECRET"),
+}
+
 
 # -----------------------------
 # Middleware
@@ -358,8 +368,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # -----------------------------
 # Media files
 # -----------------------------
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
 
 # -----------------------------
 # CORS

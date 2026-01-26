@@ -183,10 +183,16 @@ class RegisterSerializer(serializers.ModelSerializer):
 # PROFILE IMAGE
 # =========================
 class ProfileImageSerializer(serializers.ModelSerializer):
+    imageprofil_url = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        # Vérifie que ton modèle User a bien ce champ
-        fields = ("imageprofil",)
+        fields = ("imageprofil", "imageprofil_url")
+
+    def get_imageprofil_url(self, obj):
+        if obj.imageprofil:
+            return obj.imageprofil.url  # URL Cloudinary complète
+        return None
 
 
 # =========================
