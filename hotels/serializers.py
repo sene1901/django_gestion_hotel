@@ -1,7 +1,6 @@
 class HotelSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     owner = serializers.StringRelatedField(read_only=True)
-    image = serializers.ImageField(required=False)
 
     class Meta:
         model = Hotel
@@ -9,10 +8,10 @@ class HotelSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
-            'email',
-            'telephone',
+            'email',        
+            'telephone',    
             'prix',
-            'devise',
+            'devise',      
             'image',
             'image_url',
             'owner',
