@@ -814,29 +814,43 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # -----------------------------
 # Media files (Cloudinary)
 # -----------------------------
+# -----------------------------
+# Media files - Cloudinary
+# -----------------------------
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 
+# Configuration Cloudinary - NETTOYAGE DES VALEURS
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config("CLOUD_NAME", default="doxx51hrh"),
-    'API_KEY': config("CLOUD_API_KEY", default="167848852529489"),
-    'API_SECRET': config("CLOUD_API_SECRET", default="3XzNJ_D839cOEKeVekUxLFteGoc"),
+    'CLOUD_NAME': config("CLOUD_NAME", default="doxx51hrh").strip(),  # ⚠️ .strip() ajouté
+    'API_KEY': config("CLOUD_API_KEY", default="167848852529489").strip(),  # ⚠️ .strip() ajouté
+    'API_SECRET': config("CLOUD_API_SECRET", default="3XzNJ_D839cOEKeVekUxLFteGoc").strip(),  # ⚠️ .strip() ajouté
 }
 
-# Configure cloudinary
+# Import cloudinary après la configuration
 try:
     import cloudinary
     import cloudinary.uploader
     import cloudinary.api
     
+    # Configure cloudinary avec nettoyage
     cloudinary.config(
         cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
         api_key=CLOUDINARY_STORAGE['API_KEY'],
         api_secret=CLOUDINARY_STORAGE['API_SECRET'],
         secure=True
     )
+    
+    # ⚠️ DEBUG - Afficher les valeurs (masquer API_SECRET)
+    print("=" * 60)
+    print("🔍 CLOUDINARY CONFIG:")
+    print(f"CLOUD_NAME: '{CLOUDINARY_STORAGE['CLOUD_NAME']}'")
+    print(f"API_KEY: '{CLOUDINARY_STORAGE['API_KEY']}'")
+    print(f"API_SECRET: {'*' * len(CLOUDINARY_STORAGE['API_SECRET'])}")
+    print("=" * 60)
+    
 except ImportError:
-    pass
+    print("⚠️ Cloudinary not installed")
 
 # -----------------------------
 # Default primary key field type
