@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes  # ⚠️ Ajout de parser_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -44,7 +44,7 @@ def hotel_update(request, id):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def hotel_delete(request, id):
-hotel = get_object_or_404(Hotel, id=id, owner=request.user)
+    hotel = get_object_or_404(Hotel, id=id, owner=request.user)  # ⚠️ CORRECTION: 4 espaces ajoutés
     hotel.delete()
     return Response(
         {'message': 'Hôtel supprimé'},

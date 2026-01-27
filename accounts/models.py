@@ -36,11 +36,18 @@ from cloudinary.models import CloudinaryField
 
 
 class User(AbstractUser):
+    # IMPORTANT: blank=True ET null=True pour éviter les erreurs
     imageprofil = CloudinaryField(
         "imageprofil",
         blank=True,
-        null=True
+        null=True,
+        folder="profiles"  # Optionnel mais recommandé
     )
 
     def __str__(self):
         return self.username
+    
+    class Meta:
+        db_table = 'accounts_user'
+        verbose_name = 'Utilisateur'
+        verbose_name_plural = 'Utilisateurs'
