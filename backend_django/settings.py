@@ -455,11 +455,13 @@ INSTALLED_APPS = [
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+MEDIA_URL = '/media/'  # standard, Cloudinary gère le reste
+
 # Configuration Cloudinary avec valeurs par défaut
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config("CLOUD_NAME", "doxx51hrh"),
     'API_KEY': config("CLOUD_API_KEY", "167848852529489"),
-    'API_SECRET': config("CLOUD_API_SECRET", "*********************************"),
+    'API_SECRET': config("CLOUD_API_SECRET", "3XzNJ_D839cOEKeVekUxLFteGoc"),
 }
 
 # Import cloudinary après la configuration
@@ -477,10 +479,7 @@ try:
     )
 except ImportError:
     pass
-CORS_ALLOW_CREDENTIALS = True
 
-
-MEDIA_URL ="https:cloudinary://<your_api_key>:<your_api_secret>@doxx51hrh"
 # -----------------------------
 # Middleware
 # -----------------------------
