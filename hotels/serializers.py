@@ -1,3 +1,6 @@
+from rest_framework import serializers
+from .models import Hotel
+
 class HotelSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     owner = serializers.StringRelatedField(read_only=True)
@@ -8,10 +11,10 @@ class HotelSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
-            'email',        
-            'telephone',    
+            'email',        # ← Ajoute
+            'telephone',    # ← Ajoute
             'prix',
-            'devise',      
+            'devise',       # ← Ajoute
             'image',
             'image_url',
             'owner',
