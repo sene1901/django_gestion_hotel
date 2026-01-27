@@ -35,7 +35,7 @@ class EmailLoginView(APIView):
         serializer = EmailLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.validated_data
+        user = serializer.validated_data["user"]
         refresh = RefreshToken.for_user(user)
 
         return Response(
@@ -49,6 +49,7 @@ class EmailLoginView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
 
 
 # =========================

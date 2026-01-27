@@ -217,7 +217,7 @@ class EmailLoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise serializers.ValidationError("Compte désactivé")
 
-        return user
+        return {"user": user}
 
 
 
