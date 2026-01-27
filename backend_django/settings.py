@@ -478,6 +478,8 @@ try:
 except ImportError:
     pass
 
+
+MEDIA_URL ="https:cloudinary://<your_api_key>:<your_api_secret>@doxx51hrh"
 # -----------------------------
 # Middleware
 # -----------------------------
