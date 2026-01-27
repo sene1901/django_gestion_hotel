@@ -1,5 +1,4 @@
-from rest_framework.decorators import api_view, permission_classes, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,32 +16,20 @@ def hotel_list(request):
     return Response(serializer.data)
 
 
-
-class HotelCreateView(APIView):
-    permission_classes = [IsAuthenticated]
-    parser_classes = (MultiPartParser, FormParser)
-
-    def post(self, request):
-        serializer = HotelSerializer(
-            data=request.data,
-            context={"request": request}
-        )
-
-        if serializer.is_valid():
-            hotel = serializer.save(owner=request.user)
-
-            # Re-sérialisation propre (évite bug Cloudinary)
-            return Response(
-                HotelSerializer(hotel, context={"request": request}).data,
-                status=status.HTTP_201_CREATED
-            )
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def hotel_create(request):
+    serializer = HotelSerializer(
+        data=request.data, context={'request': request}
+    )
+    if serializer.is_valid():
+        serializer.save(owner=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
-@parser_classes([MultiPartParser, FormParser])
 def hotel_update(request, id):
     hotel = Hotel.objects.get(id=id, owner=request.user)
     serializer = HotelSerializer(
@@ -52,7 +39,6 @@ def hotel_update(request, id):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['DELETE'])
