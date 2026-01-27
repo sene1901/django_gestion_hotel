@@ -31,7 +31,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
 
-path("accounts/token/refresh/", TokenRefreshView.as_view()),
+path("api/accounts/token/refresh/", TokenRefreshView.as_view()),
 
 
 ]

@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Hotel
 from .serializers import HotelSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.shortcuts import get_object_or_404
 
 
 @api_view(['GET'])
@@ -18,10 +20,9 @@ def hotel_list(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
 def hotel_create(request):
-    serializer = HotelSerializer(
-        data=request.data, context={'request': request}
-    )
+    serializer = HotelSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(owner=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -30,11 +31,10 @@ def hotel_create(request):
 
 @api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
 def hotel_update(request, id):
     hotel = Hotel.objects.get(id=id, owner=request.user)
-    serializer = HotelSerializer(
-        hotel, data=request.data, partial=True, context={'request': request}
-    )
+    serializer = HotelSerializer(hotel, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -44,7 +44,7 @@ def hotel_update(request, id):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def hotel_delete(request, id):
-    hotel = Hotel.objects.get(id=id, owner=request.user)
+hotel = get_object_or_404(Hotel, id=id, owner=request.user)
     hotel.delete()
     return Response(
         {'message': 'Hôtel supprimé'},
