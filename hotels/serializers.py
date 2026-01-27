@@ -11,17 +11,23 @@ class HotelSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
-            'email',        # ← Ajoute
-            'telephone',    # ← Ajoute
+            'email',
+            'telephone',
             'prix',
-            'devise',       # ← Ajoute
+            'devise',
             'image',
             'image_url',
             'owner',
             'created_at',
             'updated_at',
         ]
-        read_only_fields = ['owner', 'created_at', 'updated_at']
+        read_only_fields = ['owner', 'created_at', 'updated_at', 'image_url']
+        extra_kwargs = {
+            'image': {'required': False, 'allow_null': True},
+            'email': {'required': False, 'allow_blank': True, 'allow_null': True},
+            'telephone': {'required': False, 'allow_blank': True, 'allow_null': True},
+            'description': {'required': False, 'allow_blank': True},
+        }
 
     def get_image_url(self, obj):
         if obj.image:
