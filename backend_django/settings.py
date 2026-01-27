@@ -477,6 +477,7 @@ try:
     )
 except ImportError:
     pass
+CORS_ALLOW_CREDENTIALS = True
 
 
 MEDIA_URL ="https:cloudinary://<your_api_key>:<your_api_secret>@doxx51hrh"
@@ -600,3 +601,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+    "accept",
+    "origin",
+]
