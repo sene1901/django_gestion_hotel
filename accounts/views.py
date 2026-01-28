@@ -79,7 +79,7 @@ class EmailLoginView(APIView):
 
     def post(self, request):
         try:
-            print("🔍 LOGIN - DÉBUT")
+            print(" LOGIN - DÉBUT")
             print(f"Données reçues: {request.data}")
             
             serializer = EmailLoginSerializer(data=request.data)
