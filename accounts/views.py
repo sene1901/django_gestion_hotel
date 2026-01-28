@@ -28,16 +28,16 @@ class RegisterView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         try:
             print("=" * 60)
-            print("🔍 REGISTER - DÉBUT")
+            print(" REGISTER - DÉBUT")
             print(f"Données reçues: {request.data}")
             print("=" * 60)
             
             serializer = self.get_serializer(data=request.data)
             
             if serializer.is_valid():
-                print("✓ Données valides")
+                print("Données valides")
                 user = serializer.save()
-                print(f"✓ Utilisateur créé: {user.username}")
+                print(f"Utilisateur créé: {user.username}")
                 
                 headers = self.get_success_headers(serializer.data)
                 return Response(
@@ -46,7 +46,7 @@ class RegisterView(generics.CreateAPIView):
                     headers=headers
                 )
             else:
-                print(f"✗ Erreurs de validation: {serializer.errors}")
+                print(f" Erreurs de validation: {serializer.errors}")
                 return Response(
                     serializer.errors,
                     status=status.HTTP_400_BAD_REQUEST
@@ -54,7 +54,7 @@ class RegisterView(generics.CreateAPIView):
                 
         except Exception as e:
             print("=" * 60)
-            print("❌ ERREUR CRITIQUE:")
+            print(" ERREUR CRITIQUE:")
             print(f"Type: {type(e).__name__}")
             print(f"Message: {str(e)}")
             print(f"Traceback:")
@@ -79,7 +79,7 @@ class EmailLoginView(APIView):
 
     def post(self, request):
         try:
-            print("🔍 LOGIN - DÉBUT")
+            print(" LOGIN - DÉBUT")
             print(f"Données reçues: {request.data}")
             
             serializer = EmailLoginSerializer(data=request.data)
@@ -101,7 +101,7 @@ class EmailLoginView(APIView):
                 status=status.HTTP_200_OK,
             )
         except Exception as e:
-            print(f"❌ ERREUR LOGIN: {e}")
+            print(f" ERREUR LOGIN: {e}")
             traceback.print_exc()
             return Response(
                 {"error": str(e)},
