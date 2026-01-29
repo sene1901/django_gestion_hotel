@@ -14,10 +14,5 @@ urlpatterns = [
     # Logout (votre logique custom si nécessaire)
     path("logout/", LogoutView.as_view(), name="logout"),
     
-    # Tout le reste est géré par Djoser :
-    # - Inscription : /api/auth/users/
-    # - Activation : /api/auth/users/activation/
-    # - Login : /api/auth/jwt/create/
-    # - Password reset : /api/auth/users/reset_password/
-    # - Password reset confirm : /api/auth/users/reset_password_confirm/
+   
 ]

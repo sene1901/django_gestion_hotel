@@ -501,6 +501,7 @@ DJOSER = {
 # DJOSER['SEND_ACTIVATION_EMAIL'] = False
 # DJOSER['SEND_CONFIRMATION_EMAIL'] = False
 
+SITE_ID = 1
 
 # -----------------------------
 # CORS Configuration - CRITIQUE
@@ -553,6 +554,7 @@ CSRF_TRUSTED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
