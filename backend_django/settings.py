@@ -459,13 +459,13 @@ DJOSER = {
     
     # Activation de compte (activé seulement si Gmail configuré en production)
     'SEND_ACTIVATION_EMAIL': GMAIL_CONFIGURED and not DEBUG,
-    'SEND_CONFIRMATION_EMAIL': GMAIL_CONFIGURED and not DEBUG,
+    'SEND_CONFIRMATION_EMAIL': False,
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     
     # Reset password
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,
-    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,
     
     # URLs
     'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
@@ -498,8 +498,7 @@ DJOSER = {
         'password_changed_confirmation': 'email/password_changed_confirmation.html',
     },
 }
-# DJOSER['SEND_ACTIVATION_EMAIL'] = False
-# DJOSER['SEND_CONFIRMATION_EMAIL'] = False
+
 
 SITE_ID = 1
 
