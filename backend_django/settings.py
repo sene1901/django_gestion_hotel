@@ -454,8 +454,8 @@ GMAIL_CONFIGURED = bool(config('EMAIL_HOST_PASSWORD', default=''))
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': False,
-    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION':False,
     
     # Activation de compte (activé seulement si Gmail configuré en production)
     'SEND_ACTIVATION_EMAIL': GMAIL_CONFIGURED and not DEBUG,
@@ -498,8 +498,8 @@ DJOSER = {
         'password_changed_confirmation': 'email/password_changed_confirmation.html',
     },
 }
-DJOSER['SEND_ACTIVATION_EMAIL'] = False
-DJOSER['SEND_CONFIRMATION_EMAIL'] = False
+# DJOSER['SEND_ACTIVATION_EMAIL'] = False
+# DJOSER['SEND_CONFIRMATION_EMAIL'] = False
 
 
 # -----------------------------
