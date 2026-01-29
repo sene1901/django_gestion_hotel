@@ -442,7 +442,7 @@ else:
     if not EMAIL_HOST_PASSWORD:
         import warnings
         warnings.warn(
-            "⚠️ EMAIL_HOST_PASSWORD (Gmail) non configuré. Les emails ne seront pas envoyés.",
+            " EMAIL_HOST_PASSWORD (Gmail) non configuré. Les emails ne seront pas envoyés.",
             RuntimeWarning
         )
 
@@ -453,7 +453,7 @@ GMAIL_CONFIGURED = bool(config('EMAIL_HOST_PASSWORD', default=''))
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USER_CREATE_PASSWORD_RETYPE': False,
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     
@@ -498,6 +498,9 @@ DJOSER = {
         'password_changed_confirmation': 'email/password_changed_confirmation.html',
     },
 }
+DJOSER['SEND_ACTIVATION_EMAIL'] = False
+DJOSER['SEND_CONFIRMATION_EMAIL'] = False
+
 
 # -----------------------------
 # CORS Configuration - CRITIQUE
@@ -691,3 +694,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # -----------------------------
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
+
+
+
+
