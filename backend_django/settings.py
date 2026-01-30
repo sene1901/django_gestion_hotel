@@ -444,7 +444,7 @@ GMAIL_CONFIGURED = bool(config('EMAIL_HOST_PASSWORD', default=''))
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'USER_CREATE_PASSWORD_RETYPE': False,  # ✅ Pas de confirmation mot de passe
+    'USER_CREATE_PASSWORD_RETYPE': False,  #  Pas de confirmation mot de passe
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     
@@ -456,7 +456,7 @@ DJOSER = {
     # Reset password
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,
-    'PASSWORD_RESET_CONFIRM_RETYPE': False,  # ✅ Pas de confirmation reset password
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,  #  Pas de confirmation reset password
     
     # URLs
     'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',

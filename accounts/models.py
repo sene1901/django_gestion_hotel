@@ -21,6 +21,9 @@
 #         db_table = 'accounts_user'
 #         verbose_name = 'Utilisateur'
 #         verbose_name_plural = 'Utilisateurs'
+
+
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
 from cloudinary.models import CloudinaryField
@@ -35,6 +38,11 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError("L'email doit être fourni")
         email = self.normalize_email(email)
+        
+        # Si username n'est pas fourni, on utilise la partie avant @ de l'email
+        if not extra_fields.get('username'):
+            extra_fields['username'] = email.split('@')[0]
+        
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -57,16 +65,24 @@ class CustomUserManager(BaseUserManager):
 # Custom User
 # -----------------------------
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=150, blank=True, null=True)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    email = models.EmailField(unique=True, verbose_name="Email")
+    username = models.CharField(max_length=150, blank=True, verbose_name="Nom d'utilisateur")
+    first_name = models.CharField(max_length=30, blank=True, verbose_name="Prénom")
+    last_name = models.CharField(max_length=30, blank=True, verbose_name="Nom")
+    
     imageprofil = CloudinaryField(
         "imageprofil",
         blank=True,
         null=True,
-        folder="profiles"
+        folder="profiles",
+        transformation={
+            'width': 300,
+            'height': 300,
+            'crop': 'fill',
+            'gravity': 'face'
+        }
     )
+    
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -74,13 +90,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]  # username requis pour AbstractBaseUser
+    REQUIRED_FIELDS = ["username"]  # username requis lors de createsuperuser
 
     def __str__(self):
         return self.email
+    
+    @property
+    def full_name(self):
+        """Retourne le nom complet de l'utilisateur"""
+        if self.first_name or self.last_name:
+            return f"{self.first_name} {self.last_name}".strip()
+        return self.username or self.email
 
     class Meta:
         db_table = "accounts_user"
         verbose_name = "Utilisateur"
         verbose_name_plural = "Utilisateurs"
-
+        ordering = ['-date_joined']
