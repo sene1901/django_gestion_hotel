@@ -362,7 +362,6 @@ import os
 from decouple import config
 import dj_database_url
 
-CORS_ALLOW_ALL_ORIGINS = True
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -----------------------------
@@ -372,7 +371,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 SECRET_KEY = config('SECRET_KEY')
 
 ALLOWED_HOSTS = [
-    "django-gestion-hotel.onrender.com",
+    "django-gestion-hotel-1.onrender.com",  # ← Corrigé avec votre URL exacte
     ".onrender.com",
     "127.0.0.1",
     "localhost",
@@ -391,10 +390,9 @@ INSTALLED_APPS = [
     
     # Third-party apps
     'rest_framework',
-    'rest_framework.authtoken',
     'rest_framework_simplejwt',
-    'djoser',
     'rest_framework_simplejwt.token_blacklist',
+    'djoser',
     'corsheaders',
     'cloudinary',
     'cloudinary_storage',
@@ -402,6 +400,7 @@ INSTALLED_APPS = [
     # Mes apps
     'accounts.apps.AccountsConfig',
     'hotels.apps.HotelsConfig',
+    'core',  # ← Ajouté si vous avez une app core
 ]
 
 # -----------------------------
@@ -432,19 +431,11 @@ else:
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
-    SERVER_EMAIL = config('EMAIL_HOST_USER')
+    EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+    SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
     EMAIL_TIMEOUT = 30
-    
-    # Vérifier que Gmail est configuré
-    if not EMAIL_HOST_PASSWORD:
-        import warnings
-        warnings.warn(
-            " EMAIL_HOST_PASSWORD (Gmail) non configuré. Les emails ne seront pas envoyés.",
-            RuntimeWarning
-        )
 
 # -----------------------------
 # Configuration Djoser
@@ -453,11 +444,11 @@ GMAIL_CONFIGURED = bool(config('EMAIL_HOST_PASSWORD', default=''))
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'USER_CREATE_PASSWORD_RETYPE': False,
+    'USER_CREATE_PASSWORD_RETYPE': False,  # ✅ Pas de confirmation mot de passe
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION':False,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     
-    # Activation de compte (activé seulement si Gmail configuré en production)
+    # Activation de compte
     'SEND_ACTIVATION_EMAIL': GMAIL_CONFIGURED and not DEBUG,
     'SEND_CONFIRMATION_EMAIL': False,
     'ACTIVATION_URL': 'activate/{uid}/{token}',
@@ -465,7 +456,7 @@ DJOSER = {
     # Reset password
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,
-    'PASSWORD_RESET_CONFIRM_RETYPE': False,
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,  # ✅ Pas de confirmation reset password
     
     # URLs
     'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
@@ -474,12 +465,11 @@ DJOSER = {
     'DOMAIN': config('FRONTEND_DOMAIN', default='localhost:5173'),
     'SITE_NAME': config('SITE_NAME', default='Mon Hôtel'),
     
-    # Serializers
+    # Serializers personnalisés
     'SERIALIZERS': {
-        'user_create': 'djoser.serializers.UserCreateSerializer',
-        'user': 'djoser.serializers.UserSerializer',
-        'current_user': 'djoser.serializers.UserSerializer',
-        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+        'user_create': 'accounts.serializers.CustomUserCreateSerializer',  # ← Utilisez votre serializer
+        'user': 'accounts.serializers.UserSerializer',
+        'current_user': 'accounts.serializers.UserSerializer',
     },
     
     # Permissions
@@ -488,22 +478,12 @@ DJOSER = {
         'activation': ['rest_framework.permissions.AllowAny'],
         'password_reset': ['rest_framework.permissions.AllowAny'],
         'password_reset_confirm': ['rest_framework.permissions.AllowAny'],
-    },
-    
-    # Templates d'email (assurez-vous qu'ils existent dans templates/email/)
-    'EMAIL': {
-        'activation': 'email/activation.html',
-        'confirmation': 'email/confirmation.html',
-        'password_reset': 'email/password_reset.html',
-        'password_changed_confirmation': 'email/password_changed_confirmation.html',
+        'user_list': ['rest_framework.permissions.IsAdminUser'],
     },
 }
 
-
-SITE_ID = 1
-
 # -----------------------------
-# CORS Configuration - CRITIQUE
+# CORS Configuration
 # -----------------------------
 CORS_ALLOWED_ORIGINS = [
     "https://django-hotel-eight.vercel.app",
@@ -543,7 +523,7 @@ CORS_ALLOW_HEADERS = [
 # CSRF Configuration
 # -----------------------------
 CSRF_TRUSTED_ORIGINS = [
-    "https://django-gestion-hotel.onrender.com",
+    "https://django-gestion-hotel-1.onrender.com",  # ← Corrigé
     "https://django-hotel-eight.vercel.app",
 ]
 
@@ -553,10 +533,17 @@ CSRF_TRUSTED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.AllowAny',  # Pour développement
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
     ],
 }
 
@@ -564,7 +551,7 @@ REST_FRAMEWORK = {
 # JWT Configuration
 # -----------------------------
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -677,13 +664,6 @@ if all([CLOUDINARY_STORAGE['CLOUD_NAME'],
         )
     except ImportError:
         pass
-else:
-    if not DEBUG:
-        import warnings
-        warnings.warn(
-            " Cloudinary non configuré. L'upload d'images ne fonctionnera pas.",
-            RuntimeWarning
-        )
 
 # -----------------------------
 # Default Primary Key Field Type
@@ -693,9 +673,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # -----------------------------
 # Security Settings (Production)
 # -----------------------------
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-USE_X_FORWARDED_HOST = True
-
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    USE_X_FORWARDED_HOST = True
+    SECURE_SSL_REDIRECT = False  # Render gère déjà le HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 
