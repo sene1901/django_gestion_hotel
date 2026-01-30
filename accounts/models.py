@@ -23,7 +23,6 @@
 #         verbose_name_plural = 'Utilisateurs'
 
 
-
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
 from cloudinary.models import CloudinaryField
@@ -62,13 +61,11 @@ class CustomUserManager(BaseUserManager):
 
 
 # -----------------------------
-# Custom User
+# Custom User (SIMPLIFIÉ)
 # -----------------------------
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, verbose_name="Email")
     username = models.CharField(max_length=150, blank=True, verbose_name="Nom d'utilisateur")
-    first_name = models.CharField(max_length=30, blank=True, verbose_name="Prénom")
-    last_name = models.CharField(max_length=30, blank=True, verbose_name="Nom")
     
     imageprofil = CloudinaryField(
         "imageprofil",
@@ -94,13 +91,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
-    @property
-    def full_name(self):
-        """Retourne le nom complet de l'utilisateur"""
-        if self.first_name or self.last_name:
-            return f"{self.first_name} {self.last_name}".strip()
-        return self.username or self.email
 
     class Meta:
         db_table = "accounts_user"

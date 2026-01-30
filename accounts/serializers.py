@@ -292,22 +292,22 @@ User = get_user_model()
 # =========================
 class CustomUserCreateSerializer(BaseUserCreateSerializer):
     """
-    Serializer Djoser pour l'inscription
+    Serializer Djoser pour l'inscription (SIMPLIFIÉ)
     """
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
-        fields = ('id', 'email', 'username', 'password', 'first_name', 'last_name')
+        fields = ('id', 'email', 'username', 'password')
 
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    Serializer Djoser pour afficher/modifier le profil
+    Serializer Djoser pour afficher/modifier le profil (SIMPLIFIÉ)
     """
     imageprofil_url = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'imageprofil', 'imageprofil_url', 'date_joined')
+        fields = ('id', 'email', 'username', 'imageprofil', 'imageprofil_url', 'date_joined')
         read_only_fields = ('id', 'email', 'date_joined')
     
     def get_imageprofil_url(self, obj):
