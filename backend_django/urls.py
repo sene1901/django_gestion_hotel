@@ -7,12 +7,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Djoser - Authentification + Activation + Password Reset
-    path('auth/', include('djoser.urls')),      # Endpoints de base
-    path('auth/', include('djoser.urls.jwt')),  # Endpoints JWT
+    path('api/auth/', include('djoser.urls')),      # Endpoints de base
+    path('api/auth/', include('djoser.urls.jwt')),  # Endpoints JWT
     
     # Vos apps
-    path('accounts/', include('accounts.urls')),
-    path('hotels/', include('hotels.urls')),
+    path('api/accounts/', include('accounts.urls')),
+    path('api/hotels/', include('hotels.urls')),
     path('', include('core.urls')),
 ]
 
