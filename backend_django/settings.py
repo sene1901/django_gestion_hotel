@@ -401,8 +401,8 @@ INSTALLED_APPS = [
     # Mes apps
     'accounts.apps.AccountsConfig',
     'hotels.apps.HotelsConfig',
-    'core',  # ← Ajouté si vous avez une app core
-    'django_extensions',
+    'core',  
+    # 'django_extensions',
 
 ]
 
