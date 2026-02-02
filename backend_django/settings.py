@@ -363,12 +363,13 @@ from decouple import config
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+SITE_ID = 1
 # -----------------------------
 # Security
 # -----------------------------
 DEBUG = config('DEBUG', default=False, cast=bool)
 SECRET_KEY = config('SECRET_KEY')
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
 
 ALLOWED_HOSTS = [
     "django-gestion-hotel-1.onrender.com",  # ← Corrigé avec votre URL exacte
@@ -387,7 +388,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'django.contrib.sites', 
     # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -401,6 +402,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'hotels.apps.HotelsConfig',
     'core',  # ← Ajouté si vous avez une app core
+    'django_extensions',
+
 ]
 
 # -----------------------------
@@ -425,6 +428,8 @@ if DEBUG:
     # Développement : emails dans la console
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+    FRONTEND_DOMAIN = 'localhost:5173'
+    FRONTEND_PROTOCOL = 'http'
 else:
     # Production : Gmail SMTP
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -436,38 +441,39 @@ else:
     DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
     SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
     EMAIL_TIMEOUT = 30
-
+    FRONTEND_DOMAIN = 'django-hotel-eight.vercel.app'  # Votre domaine Vercel
+    FRONTEND_PROTOCOL = 'https'
 # -----------------------------
 # Configuration Djoser
 # -----------------------------
 GMAIL_CONFIGURED = bool(config('EMAIL_HOST_PASSWORD', default=''))
-
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'USER_CREATE_PASSWORD_RETYPE': False,  #  Pas de confirmation mot de passe
+    'USER_CREATE_PASSWORD_RETYPE': False,
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     
     # Activation de compte
-    'SEND_ACTIVATION_EMAIL': GMAIL_CONFIGURED and not DEBUG,
+    'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRMATION_EMAIL': False,
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     
     # Reset password
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,
-    'PASSWORD_RESET_CONFIRM_RETYPE': False,  #  Pas de confirmation reset password
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,
     
     # URLs
     'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
     
-    # Configuration du site
-    'DOMAIN': config('FRONTEND_DOMAIN', default='localhost:5173'),
-    'SITE_NAME': config('SITE_NAME', default='Mon Hôtel'),
+    #  Configuration du site
+
+    'SITE_NAME': config('SITE_NAME', default='RED PRODUCT'),
+
     
     # Serializers personnalisés
     'SERIALIZERS': {
-        'user_create': 'accounts.serializers.CustomUserCreateSerializer',  # ← Utilisez votre serializer
+        'user_create': 'accounts.serializers.CustomUserCreateSerializer',
         'user': 'accounts.serializers.UserSerializer',
         'current_user': 'accounts.serializers.UserSerializer',
     },
@@ -482,6 +488,8 @@ DJOSER = {
     },
 }
 
+# # Configuration email pour le développement local
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # -----------------------------
 # CORS Configuration
 # -----------------------------

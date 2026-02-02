@@ -1,0 +1,21 @@
+{% load i18n %}
+
+{% block subject %}
+{% blocktrans %}Activation de compte sur {{ site_name }}{% endblocktrans %}
+{% endblock subject %}
+
+{% block text_body %}
+{% blocktrans %}Vous recevez ce message car vous devez activer votre compte sur {{ site_name }}.{% endblocktrans %}
+
+{% trans "Veuillez cliquer sur le lien suivant pour activer votre compte :" %}
+http://localhost:5173/{{ url }}
+
+{% trans "Merci !" %}
+{% endblock text_body %}
+
+{% block html_body %}
+<p>{% blocktrans %}Vous recevez ce message car vous devez activer votre compte sur {{ site_name }}.{% endblocktrans %}</p>
+<p>{% trans "Veuillez cliquer sur le lien suivant pour activer votre compte :" %}</p>
+<p><a href="http://localhost:5173/{{ url }}">http://localhost:5173/{{ url }}</a></p>
+<p>{% trans "Merci !" %}</p>
+{% endblock html_body %}
