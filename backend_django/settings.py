@@ -850,6 +850,9 @@ DJOSER = {
 # -----------------------------
 # CORS Configuration
 # -----------------------------
+# -----------------------------
+# CORS Configuration
+# -----------------------------
 CORS_ALLOWED_ORIGINS = [
     "https://django-hotel-eight.vercel.app",
     "http://localhost:5173",
