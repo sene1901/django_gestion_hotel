@@ -531,7 +531,7 @@ CORS_ALLOW_HEADERS = [
 # CSRF Configuration
 # -----------------------------
 CSRF_TRUSTED_ORIGINS = [
-    "https://django-gestion-hotel-1.onrender.com",  # ← Corrigé
+    "https://django-gestion-hotel-1.onrender.com",  
     "https://django-hotel-eight.vercel.app",
 ]
 
@@ -543,7 +543,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Pour développement
+        'rest_framework.permissions.AllowAny', 
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
