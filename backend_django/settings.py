@@ -708,10 +708,12 @@ FRONTEND_URL = config('FRONTEND_URL', default='https://django-hotel-eight.vercel
 
 ALLOWED_HOSTS = [
     "django-hotel-eight.vercel.app",
+    "django-gestion-hotel-1.onrender.com",
     ".onrender.com",
     "127.0.0.1",
     "localhost",
 ]
+
 
 # -----------------------------
 # Applications
@@ -786,9 +788,9 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
     
     # Création d'utilisateur
-    'USER_CREATE_PASSWORD_RETYPE': True,  # Demander confirmation du mot de passe
+    'USER_CREATE_PASSWORD_RETYPE': False,  # Demander confirmation du mot de passe
     'SEND_ACTIVATION_EMAIL': True,  # Envoyer email d'activation
-    'SEND_CONFIRMATION_EMAIL': True,  # Envoyer email de confirmation après activation
+    'SEND_CONFIRMATION_EMAIL':False,  # Envoyer email de confirmation après activation
     
     # URLs pour le frontend
     'ACTIVATION_URL': 'activate/{uid}/{token}',  # URL d'activation dans votre frontend
@@ -796,11 +798,11 @@ DJOSER = {
     
     # Configuration des emails de changement
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,  # Email après changement de mot de passe
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,  # Email après changement de mot de passe
     
     # Reset password
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,  # Ne pas révéler si l'email existe
-    'PASSWORD_RESET_CONFIRM_RETYPE': True,  # Demander confirmation du nouveau mot de passe
+    'PASSWORD_RESET_CONFIRM_RETYPE':False,  # Demander confirmation du nouveau mot de passe
     
     # Configuration du domaine
     'DOMAIN': FRONTEND_DOMAIN if not DEBUG else 'localhost:5173',
@@ -816,12 +818,12 @@ DJOSER = {
     },
     
     # Templates d'emails personnalisés (optionnel)
-    'EMAIL': {
-        'activation': 'accounts.emails.ActivationEmail',  # Si vous créez des templates custom
-        'confirmation': 'accounts.emails.ConfirmationEmail',
-        'password_reset': 'accounts.emails.PasswordResetEmail',
-        'password_changed_confirmation': 'accounts.emails.PasswordChangedConfirmationEmail',
-    },
+    # 'EMAIL': {
+    #     'activation': 'accounts.emails.ActivationEmail',  # Si vous créez des templates custom
+    #     'confirmation': 'accounts.emails.ConfirmationEmail',
+    #     'password_reset': 'accounts.emails.PasswordResetEmail',
+    #     'password_changed_confirmation': 'accounts.emails.PasswordChangedConfirmationEmail',
+    # },
     
     # Permissions
     'PERMISSIONS': {
@@ -898,9 +900,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly', 
+        'rest_framework.permissions.AllowAny', 
     ],
-    'DEFAULT_RENDERER_CLASSES': [
+'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
     'DEFAULT_PARSER_CLASSES': [
