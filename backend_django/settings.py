@@ -690,7 +690,401 @@
 
 
 
-from pathlib import Path
+
+
+
+
+
+# from pathlib import Path
+# from datetime import timedelta
+# import os
+# from decouple import config
+# import dj_database_url
+
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# SITE_ID = 1
+
+# # -----------------------------
+# # Security
+# # -----------------------------
+# DEBUG = config('DEBUG', default=False, cast=bool)
+# SECRET_KEY = config('SECRET_KEY')
+# FRONTEND_URL = config('FRONTEND_URL', default='https://django-hotel-eight.vercel.app')
+
+# ALLOWED_HOSTS = [
+#     "django-hotel-eight.vercel.app",
+#     "django-gestion-hotel-1.onrender.com",
+#     ".onrender.com",
+#     "127.0.0.1",
+#     "localhost",
+# ]
+
+
+# # -----------------------------
+# # Applications
+# # -----------------------------
+# INSTALLED_APPS = [
+#     'django.contrib.admin',
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+#     'django.contrib.sites', 
+    
+#     # Third-party apps
+#     'rest_framework',
+#     'rest_framework_simplejwt',
+#     'rest_framework_simplejwt.token_blacklist',
+#     'djoser',
+#     'corsheaders',
+#     'cloudinary',
+#     'cloudinary_storage',
+    
+#     # Mes apps
+#     'accounts.apps.AccountsConfig',
+#     'hotels.apps.HotelsConfig',
+#     'core',  
+# ]
+
+# # -----------------------------
+# # Middleware - ORDRE IMPORTANT !
+# # -----------------------------
+# MIDDLEWARE = [
+#     'corsheaders.middleware.CorsMiddleware',  
+#     'django.middleware.security.SecurityMiddleware',
+#     'whitenoise.middleware.WhiteNoiseMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+# ]
+
+# # -----------------------------
+# # Email Configuration
+# # -----------------------------
+# if DEBUG:
+#     # Développement : emails dans la console
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#     DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+#     FRONTEND_DOMAIN = 'localhost:5173'
+#     FRONTEND_PROTOCOL = 'http'
+# else:
+#     # Production : Gmail SMTP
+#     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#     EMAIL_HOST = 'smtp.gmail.com'
+#     EMAIL_PORT = 587
+#     EMAIL_USE_TLS = True
+#     EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+#     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+#     DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+#     SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+#     EMAIL_TIMEOUT = 30
+#     FRONTEND_DOMAIN = 'django-hotel-eight.vercel.app'
+#     FRONTEND_PROTOCOL = 'https'
+
+# # -----------------------------
+# # Configuration Djoser
+# # -----------------------------
+# DJOSER = {
+#     # Champ de login
+#     'LOGIN_FIELD': 'email',
+    
+#     # Création d'utilisateur
+#     'USER_CREATE_PASSWORD_RETYPE': False,  # Demander confirmation du mot de passe
+#     'SEND_ACTIVATION_EMAIL': True,  # Envoyer email d'activation
+#     'SEND_CONFIRMATION_EMAIL':False,  # Envoyer email de confirmation après activation
+    
+#     # URLs pour le frontend
+#     'ACTIVATION_URL': 'activate/{uid}/{token}',  # URL d'activation dans votre frontend
+#     'PASSWORD_RESET_CONFIRM_URL': 'reset-password/{uid}/{token}',  # URL de reset password
+    
+#     # Configuration des emails de changement
+#     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
+#     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,  # Email après changement de mot de passe
+    
+#     # Reset password
+#     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,  # Ne pas révéler si l'email existe
+#     'PASSWORD_RESET_CONFIRM_RETYPE':False,  # Demander confirmation du nouveau mot de passe
+    
+#     # Configuration du domaine
+#     'DOMAIN': FRONTEND_DOMAIN if not DEBUG else 'localhost:5173',
+#     'SITE_NAME': config('SITE_NAME', default='RED PRODUCT'),
+#     'PROTOCOL': FRONTEND_PROTOCOL if not DEBUG else 'http',
+    
+#     # Serializers personnalisés
+#     'SERIALIZERS': {
+#         'user_create': 'accounts.serializers.CustomUserCreateSerializer',
+#         'user': 'accounts.serializers.UserSerializer',
+#         'current_user': 'accounts.serializers.UserSerializer',
+#         'user_delete': 'djoser.serializers.UserDeleteSerializer',
+#     },
+    
+#     # Templates d'emails personnalisés (optionnel)
+#     # 'EMAIL': {
+#     #     'activation': 'accounts.emails.ActivationEmail',  # Si vous créez des templates custom
+#     #     'confirmation': 'accounts.emails.ConfirmationEmail',
+#     #     'password_reset': 'accounts.emails.PasswordResetEmail',
+#     #     'password_changed_confirmation': 'accounts.emails.PasswordChangedConfirmationEmail',
+#     # },
+    
+#     # Permissions
+#     'PERMISSIONS': {
+#         'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+#         'user_list': ['rest_framework.permissions.IsAdminUser'],
+#         'user_create': ['rest_framework.permissions.AllowAny'],
+#         'activation': ['rest_framework.permissions.AllowAny'],
+#         'password_reset': ['rest_framework.permissions.AllowAny'],
+#         'password_reset_confirm': ['rest_framework.permissions.AllowAny'],
+#         'set_password': ['djoser.permissions.CurrentUserOrAdmin'],
+#         'username_reset': ['rest_framework.permissions.AllowAny'],
+#         'username_reset_confirm': ['rest_framework.permissions.AllowAny'],
+#         'set_username': ['djoser.permissions.CurrentUserOrAdmin'],
+#         'user_delete': ['djoser.permissions.CurrentUserOrAdmin'],
+#         'token_create': ['rest_framework.permissions.AllowAny'],
+#         'token_destroy': ['rest_framework.permissions.IsAuthenticated'],
+#     },
+    
+#     # Tokens
+#     'TOKEN_MODEL': None,  # Utilise JWT au lieu de Token
+#     'HIDE_USERS': False,  # Permettre de lister les utilisateurs (admin only)
+# }
+
+# # -----------------------------
+# # CORS Configuration
+# # -----------------------------
+# # -----------------------------
+# # CORS Configuration
+# # -----------------------------
+# CORS_ALLOWED_ORIGINS = [
+#     "https://django-hotel-eight.vercel.app",
+#     "http://localhost:5173",
+#     "http://localhost:3000",
+# ]
+
+# # Autorise toutes les preview URLs de Vercel
+# CORS_ALLOWED_ORIGIN_REGEXES = [
+#     r"^https://.*\.vercel\.app$",
+# ]
+
+# CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOW_METHODS = [
+#     'DELETE',
+#     'GET',
+#     'OPTIONS',
+#     'PATCH',
+#     'POST',
+#     'PUT',
+# ]
+
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
+
+# # -----------------------------
+# # CSRF Configuration
+# # -----------------------------
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://django-gestion-hotel-1.onrender.com",  
+#     "https://django-hotel-eight.vercel.app",
+# ]
+
+# # -----------------------------
+# # REST Framework
+# # -----------------------------
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ],
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny', 
+#     ],
+# 'DEFAULT_RENDERER_CLASSES': [
+#         'rest_framework.renderers.JSONRenderer',
+#     ],
+#     'DEFAULT_PARSER_CLASSES': [
+#         'rest_framework.parsers.JSONParser',
+#         'rest_framework.parsers.MultiPartParser',
+#         'rest_framework.parsers.FormParser',
+#     ],
+# }
+
+# # -----------------------------
+# # JWT Configuration
+# # -----------------------------
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+#     'ROTATE_REFRESH_TOKENS': True,
+#     'BLACKLIST_AFTER_ROTATION': True,
+#     'UPDATE_LAST_LOGIN': True,
+    
+#     'ALGORITHM': 'HS256',
+#     'SIGNING_KEY': SECRET_KEY,
+#     'VERIFYING_KEY': None,
+#     'AUDIENCE': None,
+#     'ISSUER': None,
+    
+#     'AUTH_HEADER_TYPES': ('Bearer',),
+#     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+#     'USER_ID_FIELD': 'id',
+#     'USER_ID_CLAIM': 'user_id',
+    
+#     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+#     'TOKEN_TYPE_CLAIM': 'token_type',
+# }
+
+# # -----------------------------
+# # URL Configuration
+# # -----------------------------
+# ROOT_URLCONF = 'backend_django.urls'
+
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [BASE_DIR / "templates"],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#             ],
+#         },
+#     },
+# ]
+
+# WSGI_APPLICATION = 'backend_django.wsgi.application'
+
+# # -----------------------------
+# # Database
+# # -----------------------------
+# DATABASES = {
+#     'default': dj_database_url.config(default=config('DATABASE_URL'))
+# }
+
+# # -----------------------------
+# # Authentication
+# # -----------------------------
+# LOGIN_URL = '/accounts/login/'
+# LOGIN_REDIRECT_URL = '/'
+# LOGOUT_REDIRECT_URL = '/accounts/login/'
+# AUTH_USER_MODEL = 'accounts.User'
+
+# # -----------------------------
+# # Password Validation
+# # -----------------------------
+# AUTH_PASSWORD_VALIDATORS = [
+#     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+#     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+#     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+#     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+# ]
+
+# # -----------------------------
+# # Internationalization
+# # -----------------------------
+# LANGUAGE_CODE = 'fr-fr'
+# TIME_ZONE = 'UTC'
+# USE_I18N = True
+# USE_TZ = True
+
+# # -----------------------------
+# # Static Files
+# # -----------------------------
+# STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# # -----------------------------
+# # Media Files (Cloudinary)
+# # -----------------------------
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# MEDIA_URL = '/media/'
+
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': config("CLOUD_NAME", default="").strip(),
+#     'API_KEY': config("CLOUD_API_KEY", default="").strip(),
+#     'API_SECRET': config("CLOUD_API_SECRET", default="").strip(),
+# }
+
+# # Configure cloudinary si les credentials sont présents
+# if all([CLOUDINARY_STORAGE['CLOUD_NAME'], 
+#         CLOUDINARY_STORAGE['API_KEY'], 
+#         CLOUDINARY_STORAGE['API_SECRET']]):
+#     try:
+#         import cloudinary
+#         import cloudinary.uploader
+#         import cloudinary.api
+        
+#         cloudinary.config(
+#             cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+#             api_key=CLOUDINARY_STORAGE['API_KEY'],
+#             api_secret=CLOUDINARY_STORAGE['API_SECRET'],
+#             secure=True
+#         )
+#     except ImportError:
+#         pass
+
+# # -----------------------------
+# # Default Primary Key Field Type
+# # -----------------------------
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# # -----------------------------
+# # Security Settings (Production)
+# # -----------------------------
+# if not DEBUG:
+#     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+#     USE_X_FORWARDED_HOST = True
+#     SECURE_SSL_REDIRECT = False  # Render gère déjà le HTTPS
+#     SESSION_COOKIE_SECURE = True
+    # CSRF_COOKIE_SECURE = True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    from pathlib import Path
 from datetime import timedelta
 import os
 from decouple import config
@@ -746,7 +1140,7 @@ INSTALLED_APPS = [
 # Middleware - ORDRE IMPORTANT !
 # -----------------------------
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  
+    'corsheaders.middleware.CorsMiddleware',  # ⚠️ DOIT ÊTRE EN PREMIER
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -758,100 +1152,7 @@ MIDDLEWARE = [
 ]
 
 # -----------------------------
-# Email Configuration
-# -----------------------------
-if DEBUG:
-    # Développement : emails dans la console
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
-    FRONTEND_DOMAIN = 'localhost:5173'
-    FRONTEND_PROTOCOL = 'http'
-else:
-    # Production : Gmail SMTP
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
-    SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
-    EMAIL_TIMEOUT = 30
-    FRONTEND_DOMAIN = 'django-hotel-eight.vercel.app'
-    FRONTEND_PROTOCOL = 'https'
-
-# -----------------------------
-# Configuration Djoser
-# -----------------------------
-DJOSER = {
-    # Champ de login
-    'LOGIN_FIELD': 'email',
-    
-    # Création d'utilisateur
-    'USER_CREATE_PASSWORD_RETYPE': False,  # Demander confirmation du mot de passe
-    'SEND_ACTIVATION_EMAIL': True,  # Envoyer email d'activation
-    'SEND_CONFIRMATION_EMAIL':False,  # Envoyer email de confirmation après activation
-    
-    # URLs pour le frontend
-    'ACTIVATION_URL': 'activate/{uid}/{token}',  # URL d'activation dans votre frontend
-    'PASSWORD_RESET_CONFIRM_URL': 'reset-password/{uid}/{token}',  # URL de reset password
-    
-    # Configuration des emails de changement
-    'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,  # Email après changement de mot de passe
-    
-    # Reset password
-    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,  # Ne pas révéler si l'email existe
-    'PASSWORD_RESET_CONFIRM_RETYPE':False,  # Demander confirmation du nouveau mot de passe
-    
-    # Configuration du domaine
-    'DOMAIN': FRONTEND_DOMAIN if not DEBUG else 'localhost:5173',
-    'SITE_NAME': config('SITE_NAME', default='RED PRODUCT'),
-    'PROTOCOL': FRONTEND_PROTOCOL if not DEBUG else 'http',
-    
-    # Serializers personnalisés
-    'SERIALIZERS': {
-        'user_create': 'accounts.serializers.CustomUserCreateSerializer',
-        'user': 'accounts.serializers.UserSerializer',
-        'current_user': 'accounts.serializers.UserSerializer',
-        'user_delete': 'djoser.serializers.UserDeleteSerializer',
-    },
-    
-    # Templates d'emails personnalisés (optionnel)
-    # 'EMAIL': {
-    #     'activation': 'accounts.emails.ActivationEmail',  # Si vous créez des templates custom
-    #     'confirmation': 'accounts.emails.ConfirmationEmail',
-    #     'password_reset': 'accounts.emails.PasswordResetEmail',
-    #     'password_changed_confirmation': 'accounts.emails.PasswordChangedConfirmationEmail',
-    # },
-    
-    # Permissions
-    'PERMISSIONS': {
-        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
-        'user_list': ['rest_framework.permissions.IsAdminUser'],
-        'user_create': ['rest_framework.permissions.AllowAny'],
-        'activation': ['rest_framework.permissions.AllowAny'],
-        'password_reset': ['rest_framework.permissions.AllowAny'],
-        'password_reset_confirm': ['rest_framework.permissions.AllowAny'],
-        'set_password': ['djoser.permissions.CurrentUserOrAdmin'],
-        'username_reset': ['rest_framework.permissions.AllowAny'],
-        'username_reset_confirm': ['rest_framework.permissions.AllowAny'],
-        'set_username': ['djoser.permissions.CurrentUserOrAdmin'],
-        'user_delete': ['djoser.permissions.CurrentUserOrAdmin'],
-        'token_create': ['rest_framework.permissions.AllowAny'],
-        'token_destroy': ['rest_framework.permissions.IsAuthenticated'],
-    },
-    
-    # Tokens
-    'TOKEN_MODEL': None,  # Utilise JWT au lieu de Token
-    'HIDE_USERS': False,  # Permettre de lister les utilisateurs (admin only)
-}
-
-# -----------------------------
-# CORS Configuration
-# -----------------------------
-# -----------------------------
-# CORS Configuration
+# CORS Configuration - CORRIGÉ
 # -----------------------------
 CORS_ALLOWED_ORIGINS = [
     "https://django-hotel-eight.vercel.app",
@@ -896,6 +1197,95 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # -----------------------------
+# Email Configuration - CORRIGÉ POUR ÉVITER TIMEOUT
+# -----------------------------
+if DEBUG:
+    # Développement : emails dans la console
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEFAULT_FROM_EMAIL = 'noreply@monhotel.com'
+    FRONTEND_DOMAIN = 'localhost:5173'
+    FRONTEND_PROTOCOL = 'http'
+else:
+    # Production : Configuration email sécurisée
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+    EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+    SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+    
+    # ⚠️ IMPORTANT : Timeout court pour éviter de bloquer le serveur
+    EMAIL_TIMEOUT = 10
+    
+    # Ne pas crasher si l'email ne peut pas être envoyé
+    EMAIL_FAIL_SILENTLY = True
+    
+    FRONTEND_DOMAIN = 'django-hotel-eight.vercel.app'
+    FRONTEND_PROTOCOL = 'https'
+
+# -----------------------------
+# Configuration Djoser - CORRIGÉ
+# -----------------------------
+DJOSER = {
+    # Champ de login
+    'LOGIN_FIELD': 'email',
+    
+    # Création d'utilisateur - ACTIVATION EMAIL DÉSACTIVÉE TEMPORAIREMENT
+    'USER_CREATE_PASSWORD_RETYPE': False,
+    'SEND_ACTIVATION_EMAIL': False,  # ⚠️ Désactivé pour éviter timeout SMTP
+    'SEND_CONFIRMATION_EMAIL': False,
+    
+    # URLs pour le frontend
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'reset-password/{uid}/{token}',
+    
+    # Configuration des emails de changement
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
+    
+    # Reset password
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,
+    
+    # Configuration du domaine
+    'DOMAIN': FRONTEND_DOMAIN if not DEBUG else 'localhost:5173',
+    'SITE_NAME': config('SITE_NAME', default='RED PRODUCT'),
+    'PROTOCOL': FRONTEND_PROTOCOL if not DEBUG else 'http',
+    
+    # Serializers personnalisés
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.CustomUserCreateSerializer',
+        'user': 'accounts.serializers.UserSerializer',
+        'current_user': 'accounts.serializers.UserSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+    },
+    
+    # Permissions
+    'PERMISSIONS': {
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'user_list': ['rest_framework.permissions.IsAdminUser'],
+        'user_create': ['rest_framework.permissions.AllowAny'],
+        'activation': ['rest_framework.permissions.AllowAny'],
+        'password_reset': ['rest_framework.permissions.AllowAny'],
+        'password_reset_confirm': ['rest_framework.permissions.AllowAny'],
+        'set_password': ['djoser.permissions.CurrentUserOrAdmin'],
+        'username_reset': ['rest_framework.permissions.AllowAny'],
+        'username_reset_confirm': ['rest_framework.permissions.AllowAny'],
+        'set_username': ['djoser.permissions.CurrentUserOrAdmin'],
+        'user_delete': ['djoser.permissions.CurrentUserOrAdmin'],
+        'token_create': ['rest_framework.permissions.AllowAny'],
+        'token_destroy': ['rest_framework.permissions.IsAuthenticated'],
+    },
+    
+    # Tokens
+    'TOKEN_MODEL': None,
+    'HIDE_USERS': False,
+}
+
+# -----------------------------
 # REST Framework
 # -----------------------------
 REST_FRAMEWORK = {
@@ -905,7 +1295,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny', 
     ],
-'DEFAULT_RENDERER_CLASSES': [
+    'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
     'DEFAULT_PARSER_CLASSES': [
