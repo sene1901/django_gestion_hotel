@@ -13,7 +13,7 @@ urlpatterns = [
     # Vos apps
     path('api/accounts/', include('accounts.urls')),
     path('api/hotels/', include('hotels.urls')),
-    path('', include('core.urls')),
+    # path('', include('core.urls')),
 ]
 
 if settings.DEBUG:
