@@ -715,6 +715,7 @@ ALLOWED_HOSTS = [
 ]
 
 
+
 # -----------------------------
 # Applications
 # -----------------------------
@@ -745,8 +746,10 @@ INSTALLED_APPS = [
 # -----------------------------
 # Middleware - ORDRE IMPORTANT !
 # -----------------------------
+
+
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  
+    'corsheaders.middleware.CorsMiddleware',  # ✅ Doit être EN PREMIER
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -756,6 +759,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+
 
 # -----------------------------
 # Email Configuration
@@ -787,22 +793,22 @@ DJOSER = {
     # Champ de login
     'LOGIN_FIELD': 'email',
     
-    # Création d'utilisateur
-    'USER_CREATE_PASSWORD_RETYPE': False,  # Demander confirmation du mot de passe
-    'SEND_ACTIVATION_EMAIL': True,  # Envoyer email d'activation
-    'SEND_CONFIRMATION_EMAIL':False,  # Envoyer email de confirmation après activation
+    # Création d'utilisateur - DÉSACTIVER L'EMAIL POUR TESTER
+    'USER_CREATE_PASSWORD_RETYPE': False,
+    'SEND_ACTIVATION_EMAIL': False,  # ← CHANGER à False pour tester
+    'SEND_CONFIRMATION_EMAIL': False,
     
     # URLs pour le frontend
-    'ACTIVATION_URL': 'activate/{uid}/{token}',  # URL d'activation dans votre frontend
-    'PASSWORD_RESET_CONFIRM_URL': 'reset-password/{uid}/{token}',  # URL de reset password
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'reset-password/{uid}/{token}',
     
     # Configuration des emails de changement
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,  # Email après changement de mot de passe
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     
     # Reset password
-    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,  # Ne pas révéler si l'email existe
-    'PASSWORD_RESET_CONFIRM_RETYPE':False,  # Demander confirmation du nouveau mot de passe
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,
     
     # Configuration du domaine
     'DOMAIN': FRONTEND_DOMAIN if not DEBUG else 'localhost:5173',
@@ -816,14 +822,6 @@ DJOSER = {
         'current_user': 'accounts.serializers.UserSerializer',
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
-    
-    # Templates d'emails personnalisés (optionnel)
-    # 'EMAIL': {
-    #     'activation': 'accounts.emails.ActivationEmail',  # Si vous créez des templates custom
-    #     'confirmation': 'accounts.emails.ConfirmationEmail',
-    #     'password_reset': 'accounts.emails.PasswordResetEmail',
-    #     'password_changed_confirmation': 'accounts.emails.PasswordChangedConfirmationEmail',
-    # },
     
     # Permissions
     'PERMISSIONS': {
@@ -842,14 +840,10 @@ DJOSER = {
         'token_destroy': ['rest_framework.permissions.IsAuthenticated'],
     },
     
-    # Tokens
-    'TOKEN_MODEL': None,  # Utilise JWT au lieu de Token
-    'HIDE_USERS': False,  # Permettre de lister les utilisateurs (admin only)
+    # Tokens - Utiliser JWT
+    'TOKEN_MODEL': None,
+    'HIDE_USERS': False,
 }
-
-# -----------------------------
-# CORS Configuration
-# -----------------------------
 # -----------------------------
 # CORS Configuration
 # -----------------------------
@@ -865,8 +859,6 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
-
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -888,6 +880,10 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+# ⚠️ AJOUTEZ CES LIGNES SUPPLÉMENTAIRES
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 heures
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 
 # -----------------------------
 # CSRF Configuration
