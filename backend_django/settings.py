@@ -795,7 +795,7 @@ DJOSER = {
     
     # Création d'utilisateur - DÉSACTIVER L'EMAIL POUR TESTER
     'USER_CREATE_PASSWORD_RETYPE': False,
-    'SEND_ACTIVATION_EMAIL': False,  # ← CHANGER à False pour tester
+    'SEND_ACTIVATION_EMAIL': True,  # ← CHANGER à False pour tester
     'SEND_CONFIRMATION_EMAIL': False,
     
     # URLs pour le frontend
@@ -881,7 +881,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# ⚠️ AJOUTEZ CES LIGNES SUPPLÉMENTAIRES
+#  AJOUTEZ CES LIGNES SUPPLÉMENTAIRES
 CORS_PREFLIGHT_MAX_AGE = 86400  # 24 heures
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 
