@@ -25,15 +25,6 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-# Debug: afficher les URLs chargées
-if settings.DEBUG:
-    from django.urls import get_resolver
-    print("=" * 50)
-    print("URLs chargées:")
-    resolver = get_resolver()
-    for pattern in resolver.url_patterns:
-        print(f"  - {pattern}")
-    print("=" * 50)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
