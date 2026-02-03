@@ -778,11 +778,11 @@ else:
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+    EMAIL_HOST_USER = 'sene32304@gmail.com'
     EMAIL_HOST_PASSWORD ='hcrhqlzliqpjoyr'
 
     DEFAULT_FROM_EMAIL = 'sene32304@gmail.com'
-    SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+    SERVER_EMAIL = 'sene32304@gmail.com'
     EMAIL_TIMEOUT = 30
     FRONTEND_DOMAIN = 'django-hotel-eight.vercel.app'
     FRONTEND_PROTOCOL = 'https'
