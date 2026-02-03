@@ -274,7 +274,6 @@
 #             raise serializers.ValidationError("Lien invalide ou expiré")
 
 
-
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -292,16 +291,24 @@ User = get_user_model()
 # =========================
 class CustomUserCreateSerializer(BaseUserCreateSerializer):
     """
-    Serializer Djoser pour l'inscription (SIMPLIFIÉ)
+    Serializer Djoser pour l'inscription avec activation automatique
     """
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
         fields = ('id', 'email', 'username', 'password')
+    
+    def create(self, validated_data):
+        # Créer l'utilisateur avec la méthode parent
+        user = super().create(validated_data)
+        # ✅ ACTIVER AUTOMATIQUEMENT L'UTILISATEUR
+        user.is_active = True
+        user.save()
+        return user
 
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    Serializer Djoser pour afficher/modifier le profil (SIMPLIFIÉ)
+    Serializer Djoser pour afficher/modifier le profil
     """
     imageprofil_url = serializers.SerializerMethodField()
     
@@ -335,6 +342,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"].lower(),
             password=validated_data["password"],
         )
+        user.is_active = True  # ✅ ACTIVER AUSSI ICI
+        user.save()
         return user
 
 
@@ -403,7 +412,7 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             message=f"Cliquez ici pour réinitialiser votre mot de passe : {reset_link}",
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
-            fail_silently=True,  # Évite 500 si SMTP mal configuré
+            fail_silently=True,
         )
 
 
