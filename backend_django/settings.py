@@ -795,7 +795,7 @@ DJOSER = {
     
     # Création d'utilisateur - DÉSACTIVER L'EMAIL POUR TESTER
     'USER_CREATE_PASSWORD_RETYPE': False,
-    'SEND_ACTIVATION_EMAIL': False,  # ← CHANGER à False pour tester
+    'SEND_ACTIVATION_EMAIL': True,  # ← CHANGER à False pour tester
     'SEND_CONFIRMATION_EMAIL': False,
     
     # URLs pour le frontend
