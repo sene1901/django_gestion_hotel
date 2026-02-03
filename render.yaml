@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: django-gestion-hotel
+    env: python
+    region: frankfurt  # Changez selon votre région préférée
+    plan: free  # ou 'starter' pour un plan payant
+    branch: main  # ou 'master' selon votre branche principale
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn backend_django.wsgi:application --config gunicorn_config.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: django-hotel-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: WEB_CONCURRENCY
+        value: 2
+    healthCheckPath: /admin/login/
+
+databases:
+  - name: django-hotel-db
+    databaseName: django_hotel
+    user: django_user
+    plan: free
