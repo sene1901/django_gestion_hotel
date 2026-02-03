@@ -779,8 +779,9 @@ else:
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
     EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+    EMAIL_HOST_PASSWORD ='hcrhqlzliqpjoyr'
+
+    DEFAULT_FROM_EMAIL = 'sene32304@gmail.com'
     SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
     EMAIL_TIMEOUT = 30
     FRONTEND_DOMAIN = 'django-hotel-eight.vercel.app'
@@ -796,7 +797,7 @@ DJOSER = {
     # Création d'utilisateur - DÉSACTIVER L'EMAIL POUR TESTER
     'USER_CREATE_PASSWORD_RETYPE': False,
     'SEND_ACTIVATION_EMAIL': True,  # ← CHANGER à False pour tester
-    'SEND_CONFIRMATION_EMAIL': False,
+    'SEND_CONFIRMATION_EMAIL': True,
     
     # URLs pour le frontend
     'ACTIVATION_URL': 'activate/{uid}/{token}',
