@@ -769,7 +769,7 @@ MIDDLEWARE = [
 if DEBUG:
     # Développement : emails dans la console
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@monhotel.com')
+    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@redproduct.com')
     FRONTEND_DOMAIN = 'localhost:5173'
     FRONTEND_PROTOCOL = 'http'
 else:
@@ -778,13 +778,12 @@ else:
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = 'sene32304@gmail.com'
-    EMAIL_HOST_PASSWORD ='hcrhqlzliqpjoyr'
-
-    DEFAULT_FROM_EMAIL = 'sene32304@gmail.com'
-    SERVER_EMAIL = 'sene32304@gmail.com'
+    EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='sene32304@gmail.com')
+    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='hcrhqlzliqpjoyr')
+    DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='sene32304@gmail.com')
+    SERVER_EMAIL = config('EMAIL_HOST_USER', default='sene32304@gmail.com')
     EMAIL_TIMEOUT = 30
-    FRONTEND_DOMAIN = 'django-hotel-eight.vercel.app'
+    FRONTEND_DOMAIN = config('FRONTEND_DOMAIN', default='django-hotel-eight.vercel.app')
     FRONTEND_PROTOCOL = 'https'
 
 # -----------------------------
@@ -794,10 +793,10 @@ DJOSER = {
     # Champ de login
     'LOGIN_FIELD': 'email',
     
-    # Création d'utilisateur - DÉSACTIVER L'EMAIL POUR TESTER
+    # Création d'utilisateur
     'USER_CREATE_PASSWORD_RETYPE': False,
-    'SEND_ACTIVATION_EMAIL': True,  # ← CHANGER à False pour tester
-    'SEND_CONFIRMATION_EMAIL': True,
+    'SEND_ACTIVATION_EMAIL': True,  # ✅ Garder à True
+    'SEND_CONFIRMATION_EMAIL': False,  # ✅ Changer à False (pas besoin de 2 emails)
     
     # URLs pour le frontend
     'ACTIVATION_URL': 'activate/{uid}/{token}',
@@ -812,9 +811,9 @@ DJOSER = {
     'PASSWORD_RESET_CONFIRM_RETYPE': False,
     
     # Configuration du domaine
-    'DOMAIN': FRONTEND_DOMAIN if not DEBUG else 'localhost:5173',
+    'DOMAIN': FRONTEND_DOMAIN,
     'SITE_NAME': config('SITE_NAME', default='RED PRODUCT'),
-    'PROTOCOL': FRONTEND_PROTOCOL if not DEBUG else 'http',
+    'PROTOCOL': FRONTEND_PROTOCOL,
     
     # Serializers personnalisés
     'SERIALIZERS': {
